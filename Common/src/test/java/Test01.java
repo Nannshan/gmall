@@ -43,7 +43,7 @@ public class Test01 {
                 .setBootstrapServers(Constant.KAFKA_BROKERS)
                 .setGroupId("test01")
                 .setTopics("topic_db")
-                .setStartingOffsets(OffsetsInitializer.earliest())
+                .setStartingOffsets(OffsetsInitializer.latest())
                 .setValueOnlyDeserializer(new SimpleStringSchema())
                 .build(), WatermarkStrategy.noWatermarks(), "kafka_source");
 

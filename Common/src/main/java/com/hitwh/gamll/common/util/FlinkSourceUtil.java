@@ -18,14 +18,14 @@ public class FlinkSourceUtil {
 
     /**
      * 获取kafka数据
-     * @param ckAndgroupId  组名
+     * @param groupId  组名
      * @param topic 主题
      * @return kafkaSource
      */
-    public static KafkaSource<String> getKafkaSource(String ckAndgroupId, String topic) {
+    public static KafkaSource<String> getKafkaSource(String groupId, String topic) {
         return KafkaSource.<String>builder()
                 .setBootstrapServers(Constant.KAFKA_BROKERS)
-                .setGroupId(ckAndgroupId)
+                .setGroupId(groupId)
                 .setTopics(topic)
                 .setStartingOffsets(OffsetsInitializer.latest())
                 //DWD层会向kafka发送数据
@@ -34,7 +34,7 @@ public class FlinkSourceUtil {
                 .setValueOnlyDeserializer(new DeserializationSchema<String>() {
                     @Override
                     public String deserialize(byte[] message) throws IOException {
-                        if (message != null && message.length != 0) {
+                        if (message != null) {
                             return new String(message, StandardCharsets.UTF_8);
                         }
                         return null;

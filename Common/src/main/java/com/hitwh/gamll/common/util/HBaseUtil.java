@@ -13,7 +13,7 @@ public class HBaseUtil {
         // 使用配置文件hbasse-site.xml
         Connection connection = null;
         try {
-            ConnectionFactory.createConnection();
+            connection = ConnectionFactory.createConnection();
         }catch (IOException e){
             e.printStackTrace();
         }

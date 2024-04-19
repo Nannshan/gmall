@@ -35,24 +35,27 @@ public class DimApp extends BaseApp {
     }
     @Override
     public void handle(StreamExecutionEnvironment env, DataStreamSource<String> stream) {
+        //stream.print();
         //1.数据清洗
-        SingleOutputStreamOperator<JSONObject> jsonStream= etl(stream);
+        SingleOutputStreamOperator<JSONObject> jsonObjStream= etl(stream);
+        //jsonObjStream.print();
         
         //2.使用FlinkCDC读取配置表，创建广播流
         MySqlSource<String> mySqlSource = FlinkSourceUtil.getMysqlSource(Constant.PROCESS_DATABASE, Constant.PROCESS_DIM_TABLE_NAME);
         DataStreamSource<String> mysqlStream  = env.fromSource(mySqlSource, WatermarkStrategy.noWatermarks(), "mysql_source")
                 .setParallelism(1);
-        
+
         //3.在Hbase创建维度表
         SingleOutputStreamOperator<TableProcessDim> hbaseStream  = createHbaseTable(mysqlStream).setParallelism(1);
 
         //4.将广播流和主流join
         //4.1做成广播流 -- key判断是否是维度表，value做补充信息写到hbase
-        MapStateDescriptor<String, TableProcessDim> broadcast_state = new MapStateDescriptor<>("broadcast_state", String.class, TableProcessDim.class);
-        BroadcastStream<TableProcessDim> broadcastStateStream = hbaseStream.broadcast(broadcast_state);
+        MapStateDescriptor<String, TableProcessDim> broadcastState = new MapStateDescriptor<>("broadcast_state", String.class, TableProcessDim.class);
+        BroadcastStream<TableProcessDim> broadcastStateStream = hbaseStream.broadcast(broadcastState);
         //4.2连接广播流和主流
-        BroadcastConnectedStream<JSONObject, TableProcessDim> connectedStream = jsonStream.connect(broadcastStateStream);
-        SingleOutputStreamOperator<Tuple2<JSONObject, TableProcessDim>> dimStream = connectedStream.process(new DimBroadcastFunction(broadcast_state)).setParallelism(1);
+        BroadcastConnectedStream<JSONObject, TableProcessDim> connectedStream = jsonObjStream.connect(broadcastStateStream);
+        SingleOutputStreamOperator<Tuple2<JSONObject, TableProcessDim>> dimStream = connectedStream.process(new DimBroadcastFunction(broadcastState)).setParallelism(1);
+        //dimStream.print();
 
         //5.筛选需要的字段
         SingleOutputStreamOperator<Tuple2<JSONObject, TableProcessDim>> data = filterColumn(dimStream);
@@ -78,6 +81,7 @@ public class DimApp extends BaseApp {
         });
         return data;
     }
+
 
     public SingleOutputStreamOperator<TableProcessDim> createHbaseTable(DataStreamSource<String> mysqlStream) {
         SingleOutputStreamOperator<TableProcessDim> hbaseStream = mysqlStream.flatMap(new RichFlatMapFunction<String, TableProcessDim>() {
@@ -150,12 +154,12 @@ public class DimApp extends BaseApp {
 
                 try {
                     JSONObject jsonObject = JSONObject.parseObject(value);
-                    String database = jsonObject.getString("Database");
-                    String type = jsonObject.getString("Type");
+                    String database = jsonObject.getString("database");
+                    String type = jsonObject.getString("type");
                     JSONObject data = jsonObject.getJSONObject("data");
                     if ("gmall".equals(database) &&
                             !"bootstrap-complete".equals(type) && !"bootstrap-start".equals(type)
-                            && data.size() != 0 && data != null) {
+                            && data.size() != 0 ) {
                         collector.collect(jsonObject);
                     }
                 }catch (Exception e){
