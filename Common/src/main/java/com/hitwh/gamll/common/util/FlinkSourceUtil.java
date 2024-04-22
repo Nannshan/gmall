@@ -27,7 +27,7 @@ public class FlinkSourceUtil {
                 .setBootstrapServers(Constant.KAFKA_BROKERS)
                 .setGroupId(groupId)
                 .setTopics(topic)
-                .setStartingOffsets(OffsetsInitializer.latest())
+                .setStartingOffsets(OffsetsInitializer.earliest())
                 //DWD层会向kafka发送数据
                 //FlinkSQL撤回流，-D   Kafka收到的为空值
                 //SimpleStringSchema 无法反序列化null值

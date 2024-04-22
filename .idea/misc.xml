@@ -10,6 +10,7 @@
     <option name="ignoredFiles">
       <set>
         <option value="$PROJECT_DIR$/gamll-realtime/pom.xml" />
+        <option value="$PROJECT_DIR$/realtime-dwd-interaction-comment-info/pom.xml" />
       </set>
     </option>
   </component>
