@@ -1,4 +1,4 @@
-package com.hitwh.gmall.dwd.db.split.app;
+package com.hitwh.gmall.dwd.db.app;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -25,11 +25,9 @@ import org.apache.flink.streaming.api.functions.ProcessFunction;
 import org.apache.flink.util.Collector;
 import org.apache.flink.util.OutputTag;
 
-import java.time.Duration;
-
 public class DwdBaseLogApp extends BaseApp {
     public static void main(String[] args) {
-        new DwdBaseLogApp().start(10011, 3,"dwd_base_log_app", Constant.TOPIC_LOG);
+        new DwdBaseLogApp().start(10021, 3,"dwd_base_log_app", Constant.TOPIC_LOG);
     }
     @Override
     public void handle(StreamExecutionEnvironment env, DataStreamSource<String> stream) {

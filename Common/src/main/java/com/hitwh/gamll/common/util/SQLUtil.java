@@ -14,6 +14,16 @@ public class SQLUtil {
                 ")";
     }
 
+    public static String getUpsertKafkaSQL(String topicName){
+        return "WITH (\n" +
+                "  'connector' = 'upsert-kafka',\n" +
+                "  'topic' = '" + topicName + "',\n" +
+                "  'properties.bootstrap.servers' = '" + Constant.KAFKA_BROKERS +"',\n" +
+                "  'key.format' = 'json',\n" +
+                "  'value.format' = 'json'\n" +
+                ")";
+    }
+
     public static String getKafkaTopicDb(String groupId){
         return "CREATE TABLE topic_db (\n" +
                 "  `database` STRING,\n" +
@@ -27,4 +37,14 @@ public class SQLUtil {
                 "  WATERMARK FOR row_time AS row_time - INTERVAL '5' SECOND\n" +
                 ") " + getKafkaSourceSQL(Constant.TOPIC_DB, groupId);
     }
+
+    public static String getKafkaSinkSQL(String topicName){
+        return "WITH (\n" +
+                "  'connector' = 'kafka',\n" +
+                "  'topic' = '" + topicName + "',\n" +
+                "  'properties.bootstrap.servers' = '" + Constant.KAFKA_BROKERS +"',\n" +
+                "  'format' = 'json'\n" +
+                ")";
+    }
+
 }

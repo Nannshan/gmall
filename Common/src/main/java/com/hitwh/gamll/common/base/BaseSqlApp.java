@@ -57,14 +57,16 @@ public abstract class BaseSqlApp {
     // 1.6 读取HBase的base_dic字典表
     public void createBaseDic(StreamTableEnvironment tableEnv){
         tableEnv.executeSql("CREATE TABLE base_dic (\n" +
-                " rowkey STRING,\n" +
+                " dic_code STRING,\n" +
                 " info ROW<dic_name STRING>,\n" +
-                " PRIMARY KEY (rowkey) NOT ENFORCED\n" +
+                " PRIMARY KEY (dic_code) NOT ENFORCED\n" +
                 ") WITH (\n" +
                 " 'connector' = 'hbase-2.2',\n" +
                 " 'table-name' = 'gmall:dim_base_dic',\n" +
                 " 'zookeeper.quorum' = '" + Constant.HBASE_ZOOKEEPER_QUORUM + "'\n" +
                 ")");
     }
+
+
 
 }

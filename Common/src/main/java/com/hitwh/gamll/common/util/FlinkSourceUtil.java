@@ -54,7 +54,7 @@ public class FlinkSourceUtil {
     }
 
     /**
-     * 获取mysql数据
+     * 获取mysql数据变更日志
      * @param databaseName
      * @param tableName
      * @return

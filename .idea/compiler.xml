@@ -7,9 +7,13 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="Dim" />
         <module name="Dws" />
         <module name="realtime-dwd-base-log" />
+        <module name="realtime-dwd-trade-cart-add" />
+        <module name="Dim" />
+        <module name="realtime-dwd-trade-order-detail" />
+        <module name="realtime-dwd-trade-order-pay-suc-detail" />
+        <module name="realtime-dwd-base-db" />
         <module name="realtime-dwd-interaction-comment-info" />
         <module name="Common" />
       </profile>
