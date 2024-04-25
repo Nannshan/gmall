@@ -47,4 +47,14 @@ public class SQLUtil {
                 ")";
     }
 
+    public static String getDorisSinkSQL(String tableName){
+        return "WITH (\n" +
+                "      'connector' = 'doris',\n" +
+                "      'fenodes' = '" + Constant.FENODES + "',\n" +
+                "      'table.identifier' = '" + Constant.DORIS_DATABASE + "." +  tableName + "',\n" +
+                "      'username' = '"  + Constant.DORIS_USERNAME+ "',\n" +
+                "      'password' = '" + Constant.DORIS_PASSWORD + "',\n" +
+                "      'sink.label-prefix' = 'doris_label" + System.currentTimeMillis() + "'\n" +
+                ")";
+    }
 }

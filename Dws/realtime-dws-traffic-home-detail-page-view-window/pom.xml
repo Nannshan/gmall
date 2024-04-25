@@ -3,24 +3,13 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>gamll</artifactId>
+        <artifactId>Dws</artifactId>
         <groupId>org.example</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>Dws</artifactId>
-    <packaging>pom</packaging>
-    <modules>
-        <module>realtime-dws-traffic-source-keyword-page-view-window</module>
-        <module>realtime-dws-trade-cart-add-uu-window</module>
-        <module>realtime-dws-trade-province-order-window</module>
-        <module>realtime-dws-trade-sku-order-window</module>
-        <module>realtime-dws-traffic-home-detail-page-view-window</module>
-        <module>realtime-dws-traffic-vc-ch-ar-is_new-page-view-window</module>
-        <module>realtime-dws-user-user-login-window</module>
-        <module>realtime-dws-user-user-register-window</module>
-    </modules>
+    <artifactId>realtime-dws-traffic-home-detail-page-view-window</artifactId>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -30,7 +19,7 @@
     <dependencies>
         <dependency>
             <groupId>org.example</groupId>
-            <artifactId>Common</artifactId>
+            <artifactId>Dws</artifactId>
             <version>1.0-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>

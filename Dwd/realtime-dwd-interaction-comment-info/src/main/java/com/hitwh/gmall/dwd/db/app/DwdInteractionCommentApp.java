@@ -26,6 +26,7 @@ public class DwdInteractionCommentApp extends BaseSqlApp {
         //4.使用lookup join 实现维度退化
         Table joinTable = lookUpJoin(tableEnv);
 
+
         //5.创建kafka sink 所需要的表格
         createKafkaSinkTable(tableEnv);
 

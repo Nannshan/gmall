@@ -30,7 +30,7 @@ import java.util.List;
 
 public class DwdBaseDbApp extends BaseApp {
     public static void main(String[] args) {
-        new DwdBaseDbApp().start(10029, 4, "dwd_base_db_app", Constant.TOPIC_DB);
+        new DwdBaseDbApp().start(10028, 3, "dwd_base_db_app", Constant.TOPIC_DB);
     }
     @Override
     public void handle(StreamExecutionEnvironment env, DataStreamSource<String> stream) {
@@ -82,7 +82,7 @@ public class DwdBaseDbApp extends BaseApp {
             @Override
             public void open(Configuration parameters) throws Exception {
                 Connection connection = JdbcUtil.getMysqlConnection();
-                List<TableProcessDwd> tableProcessDwds = JdbcUtil.queryList(connection, "", TableProcessDwd.class, true);
+                List<TableProcessDwd> tableProcessDwds = JdbcUtil.queryList(connection, "select * from gmall_config.table_process_dwd", TableProcessDwd.class, true);
                 for (TableProcessDwd t : tableProcessDwds) {
                     hashMap.put(t.getSourceTable() + ":" + t.getSourceType(),t);
                 }

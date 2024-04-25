@@ -13,6 +13,7 @@
         <module>Dim</module>
         <module>Dws</module>
         <module>Dwd</module>
+        <module>realtime-dws-user-user-login-window</module>
     </modules>
 
     <properties>

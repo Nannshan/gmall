@@ -57,11 +57,11 @@ public class DwdBaseLogApp extends BaseApp {
         SideOutputDataStream<String> displayStream = pageStream.getSideOutput(displayTag);
         SideOutputDataStream<String> actionStream = pageStream.getSideOutput(actionTag);
         
-        pageStream.print("page");
-        startStream.print("start");
-        errorStream.print("error");
-        displayStream.print("display");
-        actionStream.print("action");
+//        pageStream.print("page");
+//        startStream.print("start");
+//        errorStream.print("error");
+//        displayStream.print("display");
+//        actionStream.print("action");
 
         pageStream.sinkTo(FlinkSinkUtil.getKafkaSink(Constant.TOPIC_DWD_TRAFFIC_PAGE));
         startStream.sinkTo(FlinkSinkUtil.getKafkaSink(Constant.TOPIC_DWD_TRAFFIC_START));

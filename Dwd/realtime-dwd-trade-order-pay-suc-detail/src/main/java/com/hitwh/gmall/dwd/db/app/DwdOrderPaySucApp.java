@@ -83,7 +83,7 @@ public class DwdOrderPaySucApp extends BaseSqlApp {
                 "  ts\n" +
                 "FROM pay_order p\n" +
                 "left join base_dic FOR SYSTEM_TIME AS OF p.proc_time as b\n" +
-                "on p.payment_type = b.rowkey");
+                "on p.payment_type = b.dic_code");
     }
 
     private void intervalJoin(StreamTableEnvironment tableEnv) {

@@ -7,15 +7,22 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="Dws" />
-        <module name="realtime-dwd-base-log" />
         <module name="realtime-dwd-trade-cart-add" />
         <module name="Dim" />
+        <module name="realtime-dws-traffic-source-keyword-page-view-window" />
+        <module name="realtime-dws-user-user-login-window" />
         <module name="realtime-dwd-trade-order-detail" />
-        <module name="realtime-dwd-trade-order-pay-suc-detail" />
-        <module name="realtime-dwd-base-db" />
+        <module name="realtime-dws-trade-province-order-window" />
         <module name="realtime-dwd-interaction-comment-info" />
         <module name="Common" />
+        <module name="realtime-dws-user-user-register-window" />
+        <module name="realtime-dws-traffic-home-detail-page-view-window" />
+        <module name="realtime-dwd-base-log" />
+        <module name="realtime-dws-traffic-vc-ch-ar-is_new-page-view-window" />
+        <module name="realtime-dws-trade-sku-order-window" />
+        <module name="realtime-dwd-trade-order-pay-suc-detail" />
+        <module name="realtime-dwd-base-db" />
+        <module name="realtime-dws-trade-cart-add-uu-window" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
