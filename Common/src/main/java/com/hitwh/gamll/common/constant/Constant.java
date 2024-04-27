@@ -3,6 +3,8 @@ package com.hitwh.gamll.common.constant;
 public class Constant {
     public static final String KAFKA_BROKERS = "hadoop102:9092,hadoop103:9092,hadoop104:9092";
 
+    public static final String HDFS_DIR = "hdfs://hadoop102:8020/gmall/stream/";
+
     public static final String TOPIC_DB = "topic_db";
     public static final String TOPIC_LOG = "topic_log";
 
@@ -30,6 +32,7 @@ public class Constant {
     public static final String TOPIC_DWD_TRADE_CART_ADD = "dwd_trade_cart_add";
     public static final String TOPIC_DWD_TRADE_ORDER_DETAIL = "dwd_trade_order_detail";
     public static final String TOPIC_DWD_TRADE_ORDER_PAYMENT_SUCCESS = "dwd_trade_order_payment_success";
+    public static final String TOPIC_DWD_USER_REGISTER = "dwd_user_register";
 
 
     public static final String FENODES = "hadoop102:7030";

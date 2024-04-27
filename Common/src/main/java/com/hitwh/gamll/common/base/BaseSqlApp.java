@@ -8,6 +8,7 @@ import org.apache.flink.streaming.api.CheckpointingMode;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
 
+import static com.hitwh.gamll.common.constant.Constant.HDFS_DIR;
 import static org.apache.flink.streaming.api.environment.CheckpointConfig.ExternalizedCheckpointCleanup.RETAIN_ON_CANCELLATION;
 
 public abstract class BaseSqlApp {
@@ -35,7 +36,7 @@ public abstract class BaseSqlApp {
         // 1.4.3 设置 checkpoint 模式: 精准一次
         env.getCheckpointConfig().setCheckpointingMode(CheckpointingMode.EXACTLY_ONCE);
         // 1.4.4 checkpoint 存储
-        env.getCheckpointConfig().setCheckpointStorage("hdfs://hadoop102:8020/gmall2023/stream/" + ckAndGroupId);
+        env.getCheckpointConfig().setCheckpointStorage(HDFS_DIR + ckAndGroupId);
         // 1.4.5 checkpoint 并发数
         env.getCheckpointConfig().setMaxConcurrentCheckpoints(1);
         // 1.4.6 checkpoint 之间的最小间隔

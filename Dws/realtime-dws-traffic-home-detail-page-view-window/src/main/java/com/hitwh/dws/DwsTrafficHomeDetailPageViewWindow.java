@@ -7,6 +7,8 @@ import com.hitwh.gamll.common.constant.Constant;
 import com.hitwh.gamll.common.function.DorisMapFunction;
 import com.hitwh.gamll.common.util.DateFormatUtil;
 import com.hitwh.gamll.common.util.FlinkSinkUtil;
+import org.apache.flink.api.common.eventtime.SerializableTimestampAssigner;
+import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.api.common.functions.FlatMapFunction;
 import org.apache.flink.api.common.functions.ReduceFunction;
 import org.apache.flink.api.common.state.StateTtlConfig;
@@ -24,6 +26,8 @@ import org.apache.flink.streaming.api.functions.windowing.ProcessAllWindowFuncti
 import org.apache.flink.streaming.api.windowing.assigners.TumblingEventTimeWindows;
 import org.apache.flink.streaming.api.windowing.windows.TimeWindow;
 import org.apache.flink.util.Collector;
+
+import java.time.Duration;
 
 public class DwsTrafficHomeDetailPageViewWindow extends BaseApp {
     public static void main(String[] args) {
@@ -60,11 +64,7 @@ public class DwsTrafficHomeDetailPageViewWindow extends BaseApp {
     }
 
     private SingleOutputStreamOperator<TrafficHomeDetailPageViewBean> windowAndAgg(SingleOutputStreamOperator<TrafficHomeDetailPageViewBean> withWaterMarkStream) {
-        return null;
-    }
-
-    private SingleOutputStreamOperator<TrafficHomeDetailPageViewBean> withWaterMark(SingleOutputStreamOperator<TrafficHomeDetailPageViewBean> processBeanStream) {
-        return processBeanStream.windowAll(TumblingEventTimeWindows.of(org.apache.flink.streaming.api.windowing.time.Time.seconds(10L))).reduce(
+        return withWaterMarkStream.windowAll(TumblingEventTimeWindows.of(org.apache.flink.streaming.api.windowing.time.Time.seconds(10L))).reduce(
                 new ReduceFunction<TrafficHomeDetailPageViewBean>() {
                     @Override
                     public TrafficHomeDetailPageViewBean reduce(TrafficHomeDetailPageViewBean value1, TrafficHomeDetailPageViewBean value2) throws Exception {
@@ -76,8 +76,8 @@ public class DwsTrafficHomeDetailPageViewWindow extends BaseApp {
                     @Override
                     public void process(Context context, Iterable<TrafficHomeDetailPageViewBean> iterable, Collector<TrafficHomeDetailPageViewBean> collector) throws Exception {
                         TimeWindow window = context.window();
-                        String stt = DateFormatUtil.tsToDate(window.getStart());
-                        String edt = DateFormatUtil.tsToDate(window.getEnd());
+                        String stt = DateFormatUtil.tsToDateTime(window.getStart());
+                        String edt = DateFormatUtil.tsToDateTime(window.getEnd());
                         String curDt = DateFormatUtil.tsToDateForPartition(System.currentTimeMillis());
                         for (TrafficHomeDetailPageViewBean value : iterable) {
                             value.setStt(stt);
@@ -88,6 +88,15 @@ public class DwsTrafficHomeDetailPageViewWindow extends BaseApp {
                     }
                 }
         );
+    }
+
+    private SingleOutputStreamOperator<TrafficHomeDetailPageViewBean> withWaterMark(SingleOutputStreamOperator<TrafficHomeDetailPageViewBean> processBeanStream) {
+        return processBeanStream.assignTimestampsAndWatermarks(WatermarkStrategy.<TrafficHomeDetailPageViewBean>forBoundedOutOfOrderness(Duration.ofSeconds(5L)).withTimestampAssigner(new SerializableTimestampAssigner<TrafficHomeDetailPageViewBean>() {
+            @Override
+            public long extractTimestamp(TrafficHomeDetailPageViewBean element, long recordTimestamp) {
+                return element.getTs();
+            }
+        }));
     }
 
     private SingleOutputStreamOperator<TrafficHomeDetailPageViewBean> uvCountBean(KeyedStream<JSONObject, String> keyedStream) {
