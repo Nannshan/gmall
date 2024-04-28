@@ -41,8 +41,9 @@ public class RedisUtil {
         }
     }
 
+    //获取异步连接
     public static StatefulRedisConnection<String, String> getRedisAsyncConnection() {
-        RedisClient redisClient = RedisClient.create("redis://hadoop103:6379/4");
+        RedisClient redisClient = RedisClient.create("redis://hadoop102:6379/4");
         return redisClient.connect();
     }
 
