@@ -1,11 +1,14 @@
 package com.hitwh.gamll.common.util;
 
 import com.alibaba.fastjson.JSONObject;
+import org.apache.hadoop.hbase.Cell;
+import org.apache.hadoop.hbase.CellUtil;
 import org.apache.hadoop.hbase.TableName;
 import org.apache.hadoop.hbase.client.*;
 import org.apache.hadoop.hbase.util.Bytes;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 public class HBaseUtil {
     //获取连接
@@ -128,28 +131,28 @@ public class HBaseUtil {
     }
 
 
-//    public static JSONObject getCells(Connection connection,String namespace,String tableName,String rowKey) throws IOException {
-//        // 1. 获取table
-//        Table table = connection.getTable(TableName.valueOf(namespace, tableName));
-//
-//        // 2. 创建get对象
-//        Get get = new Get(Bytes.toBytes(rowKey));
-//        JSONObject jsonObject = new JSONObject();
-//        // 3. 调用get方法
-//        try {
-//            Result result = table.get(get);
-//            for (Cell cell : result.rawCells()) {
-//                jsonObject.put(new String(CellUtil.cloneQualifier(cell), StandardCharsets.UTF_8),new String(CellUtil.cloneValue(cell),StandardCharsets.UTF_8));
-//            }
-//
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        // 4. 关闭table
-//        table.close();
-//
-//        return jsonObject;
-//    }
+    public static JSONObject getCells(Connection connection,String namespace,String tableName,String rowKey) throws IOException {
+        // 1. 获取table
+        Table table = connection.getTable(TableName.valueOf(namespace, tableName));
+
+        // 2. 创建get对象
+        Get get = new Get(Bytes.toBytes(rowKey));
+        JSONObject jsonObject = new JSONObject();
+        // 3. 调用get方法
+        try {
+            Result result = table.get(get);
+            for (Cell cell : result.rawCells()) {
+                jsonObject.put(new String(CellUtil.cloneQualifier(cell), StandardCharsets.UTF_8),new String(CellUtil.cloneValue(cell),StandardCharsets.UTF_8));
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        // 4. 关闭table
+        table.close();
+
+        return jsonObject;
+    }
 
     /**
      * 删除一整行数据
