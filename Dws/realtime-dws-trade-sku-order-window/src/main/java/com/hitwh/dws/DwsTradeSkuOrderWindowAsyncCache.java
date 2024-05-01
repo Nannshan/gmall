@@ -8,9 +8,6 @@ import com.hitwh.gamll.common.function.DimAsyncFunction;
 import com.hitwh.gamll.common.function.DorisMapFunction;
 import com.hitwh.gamll.common.util.DateFormatUtil;
 import com.hitwh.gamll.common.util.FlinkSinkUtil;
-import com.hitwh.gamll.common.util.HBaseUtil;
-import com.hitwh.gamll.common.util.RedisUtil;
-import io.lettuce.core.api.StatefulRedisConnection;
 import org.apache.flink.api.common.eventtime.SerializableTimestampAssigner;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.api.common.functions.*;
@@ -24,24 +21,14 @@ import org.apache.flink.streaming.api.datastream.KeyedStream;
 import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.functions.KeyedProcessFunction;
-import org.apache.flink.streaming.api.functions.async.AsyncFunction;
-import org.apache.flink.streaming.api.functions.async.ResultFuture;
-import org.apache.flink.streaming.api.functions.async.RichAsyncFunction;
 import org.apache.flink.streaming.api.functions.windowing.ProcessWindowFunction;
 import org.apache.flink.streaming.api.windowing.assigners.TumblingEventTimeWindows;
 import org.apache.flink.streaming.api.windowing.windows.TimeWindow;
 import org.apache.flink.util.Collector;
-import org.apache.hadoop.hbase.client.AsyncConnection;
-import org.apache.hadoop.hbase.client.Connection;
-import redis.clients.jedis.Jedis;
 
 import java.math.BigDecimal;
 import java.time.Duration;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Supplier;
 
 
 public class DwsTradeSkuOrderWindowAsyncCache extends BaseApp {
@@ -65,10 +52,8 @@ public class DwsTradeSkuOrderWindowAsyncCache extends BaseApp {
 
         SingleOutputStreamOperator<TradeSkuOrderBean> processBeanStream = getProcess(keyedStream);
 
-
         // 5. 分组开窗聚合
         SingleOutputStreamOperator<TradeSkuOrderBean> reduceBeanStream = windowAndAgg(processBeanStream);
-
 
         // 6. 关联维度信息
         //异步关联 + 旁路缓存
