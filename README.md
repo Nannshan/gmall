@@ -1,2 +1,2 @@
-# gamll
+# gmall
 A distribute computing program
