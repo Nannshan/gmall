@@ -28,6 +28,7 @@
         <hbase.version>2.4.11</hbase.version>
     </properties>
 
+
     <dependencies>
         <dependency>
             <groupId>org.apache.flink</groupId>
@@ -73,6 +74,12 @@
             <scope>provided</scope>
         </dependency>
 
+        <dependency>
+            <groupId>org.apache.hadoop</groupId>
+            <artifactId>hadoop-common</artifactId>
+            <version>${hadoop.version}</version>
+            <scope>provided</scope>
+        </dependency>
         <dependency>
             <groupId>org.apache.hadoop</groupId>
             <artifactId>hadoop-auth</artifactId>
@@ -221,6 +228,7 @@
         </dependencies>
 
     </dependencyManagement>
+
 
     <build>
         <plugins>
